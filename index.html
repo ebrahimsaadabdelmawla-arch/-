@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أكاديمية المحمود لتحفيظ القرآن الكريم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #37655B;
+            --accent-gold: #C0A460;
+            --light-bg: #FFFFFF;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --dark-text: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: 45px;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+
+        /* --- Audio Player Bar --- */
+        .quran-audio-bar {
+            background-color: #2c5249;
+            color: white;
+            padding: 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .audio-btn {
+            background: var(--accent-gold);
+            color: black;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        /* --- Header & Nav --- */
+        header {
+            background-color: var(--light-bg);
+            padding: 12px 50px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .site-logo {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-container h1 {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--primary-green);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            font-weight: 700;
+        }
+
+        nav a:hover { color: var(--primary-green); }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn-green {
+            background-color: var(--primary-green);
+            color: white !important;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-weight: 700;
+        }
+
+        .btn-gold-text {
+            color: var(--accent-gold) !important;
+            font-weight: 700;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('cover.jpg') center/cover no-repeat;
+            height: 65vh;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 0 100px;
+            position: relative;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 650px;
+        }
+
+        .hero h2 {
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .btn-gold {
+            background-color: var(--accent-gold);
+            color: black !important;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        /* --- Programs Section --- */
+        .programs {
+            padding: 60px 100px;
+            background-color: #F9FDFB;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-size: 35px;
+        }
+
+        .card:nth-child(1) .card-icon { background-color: #E6FFFA; color: #38B2AC; }
+        .card:nth-child(2) .card-icon { background-color: #EBF8FF; color: #3182CE; }
+        .card:nth-child(3) .card-icon { background-color: #FAF5FF; color: #805AD5; }
+
+        .card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .card p.english-subtitle {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        .btn-card {
+            background-color: var(--primary-green);
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        /* --- Pricing Section --- */
+        .pricing {
+            padding: 80px 100px;
+            background-color: #FFFFFF;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--primary-green);
+            margin-bottom: 40px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .price-card {
+            background: #F9FDFB;
+            border: 2px solid #E2E8F0;
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .price-card.popular {
+            border-color: var(--accent-gold);
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            background: #FFF;
+        }
+
+        .badge {
+            position: absolute;
+            top: -15px;
+            right: 50%;
+            transform: translateX(50%);
+            background-color: var(--accent-gold);
+            color: black;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .price-card h4 { font-size: 22px; color: var(--primary-green); margin-bottom: 15px; }
+        .price { font-size: 36px; font-weight: 900; color: #2D3748; margin-bottom: 20px; }
+        .price span { font-size: 16px; font-weight: 400; color: #718096; }
+
+        .price-features {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: right;
+        }
+
+        .price-features li {
+            padding: 10px 0;
+            border-bottom: 1px dashed #E2E8F0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .price-features i { color: var(--primary-green); }
+
+        /* --- Floating Social Buttons --- */
+        .social-float-container {
+            position: fixed;
+            bottom: 60px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 1001;
+        }
+
+        .whatsapp-float, .facebook-float {
+            background-color: white;
+            padding: 10px 18px;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+
+        .whatsapp-icon-circle {
+            background-color: #25D366;
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+
+        .facebook-icon-circle {
+            background-color: #1877F2;
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+
+        /* --- Marquee Footer Bar --- */
+        .footer-marquee {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--primary-green);
+            color: white;
+            padding: 8px 0;
+            font-weight: 700;
+            font-size: 15px;
+            z-index: 2000;
+            border-top: 2px solid var(--accent-gold);
+        }
+
+        /* --- Responsiveness --- */
+        @media (max-width: 1024px) {
+            header, .hero, .programs, .pricing { padding: 30px; }
+            .hero { text-align: center; align-items: center; }
+            .grid, .pricing-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .price-card.popular { transform: none; }
+        }
+
+        @media (max-width: 768px) {
+            nav ul, .cta-buttons { display: none; }
+            .grid, .pricing-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quran-audio-bar">
+        <span><i class="fa-solid fa-volume-high"></i> تلاوة القرآن الكريم (مشاري العفاسي)</span>
+        <div class="audio-controls">
+            <button class="audio-btn" id="playBtn" onclick="toggleAudio()"><i class="fa-solid fa-play"></i> تشغيل الصوت</button>
+        </div>
+    </div>
+    <audio id="quranAudio" loop preload="auto">
+        <source src="https://server8.mp3quran.net/afs/001.mp3" type="audio/mpeg">
+    </audio>
+
+    <header>
+        <div class="logo-container">
+            <img src="logo.png" alt="لوجو أكاديمية المحمود" class="site-logo">
+            <h1>اكاديمية المحمود</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#programs">البرامج التعليمية</a></li>
+                <li><a href="#pricing">باقات الاشتراكات</a></li>
+                <li><a href="https://wa.me/201025148353">تواصل معنا</a></li>
+            </ul>
+        </nav>
+        <div class="cta-buttons">
+            <a href="https://wa.me/201025148353" class="btn-green">Register Now</a>
+            <a href="https://wa.me/201025148353" class="btn-gold-text">سجل الآن</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h2>اكاديمية المحمود لتحفيظ القرآن الكريم<br> خيركم من تعلم القرآن وعلمه</h2>
+            <p>انضم إلينا اليوم لتعلم وحفظ القرآن الكريم عبر برامجنا المتخصصة.</p>
+            <a href="https://wa.me/201025148353" class="btn-gold">التسجيل في الحلقات</a>
+        </div>
+    </section>
+
+    <section class="programs" id="programs">
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-child"></i></div>
+                <h3>حفظ الأطفال</h3>
+                <p class="english-subtitle">Children's Memorization</p>
+                <a href="https://wa.me/201025148353" class="btn-card">احجز مقعدك</a>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                <h3>التجويد والإتقان</h3>
+                <p class="english-subtitle">Tajweed & Mastery</p>
+                <a href="https://wa.me/201025148353" class="btn-card">احجز مقعدك</a>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-globe"></i></div>
+                <h3>الحلقات المباشرة (أونلاين)</h3>
+                <p class="english-subtitle">Live Online Classes</p>
+                <a href="https://wa.me/201025148353" class="btn-card">احجز مقعدك</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <h3 class="section-title">خطط الاشتراكات الشهريّة</h3>
+        <div class="pricing-grid">
+            <div class="price-card">
+                <h4>الباقة الأساسية</h4>
+                <div class="price">400 <span>ج.م / شهرياً</span></div>
+                <ul class="price-features">
+                    <li><i class="fa-solid fa-check"></i> 4 حصص شهرياً (حصة أسبوعياً)</li>
+                    <li><i class="fa-solid fa-check"></i> مدة الحصة 45 دقيقة</li>
+                    <li><i class="fa-solid fa-check"></i> تحفيظ ومراجعة فردية</li>
+                    <li><i class="fa-solid fa-check"></i> متابعة مع معلم/معلمة مجازين</li>
+                </ul>
+                <a href="https://wa.me/201025148353?text=أود%20الاشتراك%20في%20الباقة%20الأساسية" class="btn-green">اشترك الآن</a>
+            </div>
+
+            <div class="price-card popular">
+                <div class="badge">الأكثر طلباً</div>
+                <h4>الباقة المتقدمة</h4>
+                <div class="price">750 <span>ج.م / شهرياً</span></div>
+                <ul class="price-features">
+                    <li><i class="fa-solid fa-check"></i> 8 حصص شهرياً (حصتين أسبوعياً)</li>
+                    <li><i class="fa-solid fa-check"></i> مدة الحصة 45 دقيقة</li>
+                    <li><i class="fa-solid fa-check"></i> حفظ + تصحيح تلاوة وتجويد</li>
+                    <li><i class="fa-solid fa-check"></i> تقارير متابعة دورية</li>
+                </ul>
+                <a href="https://wa.me/201025148353?text=أود%20الاشتراك%20في%20الباقة%20المتقدمة" class="btn-gold">اشترك الآن</a>
+            </div>
+
+            <div class="price-card">
+                <h4>باقة المكثف</h4>
+                <div class="price">1100 <span>ج.م / شهرياً</span></div>
+                <ul class="price-features">
+                    <li><i class="fa-solid fa-check"></i> 12 حصة شهرياً (3 حصص أسبوعياً)</li>
+                    <li><i class="fa-solid fa-check"></i> مدة الحصة 60 دقيقة</li>
+                    <li><i class="fa-solid fa-check"></i> برنامج مكثف للحفظ والمراجعة</li>
+                    <li><i class="fa-solid fa-check"></i> اختبارات وتقييمات مستمرة</li>
+                </ul>
+                <a href="https://wa.me/201025148353?text=أود%20الاشتراك%20في%20الباقة%20المكثفة" class="btn-green">اشترك الآن</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="social-float-container">
+        <a href="https://www.facebook.com/share/18ajX2Xtdg/" class="facebook-float" target="_blank">
+            <div>تابعنا على الفيسبوك</div>
+            <div class="facebook-icon-circle">
+                <i class="fa-brands fa-facebook-f"></i>
+            </div>
+        </a>
+
+        <a href="https://wa.me/201025148353" class="whatsapp-float" target="_blank">
+            <div>
+                تواصل عبر واتساب<br>
+                <span style="font-weight: 400;">01025148353</span>
+            </div>
+            <div class="whatsapp-icon-circle">
+                <i class="fa-brands fa-whatsapp"></i>
+            </div>
+        </a>
+    </div>
+
+    <div class="footer-marquee">
+        <marquee direction="right" scrollamount="6">
+            تصميم مهندس ابراهيم سعد - للتواصل: 01101475409 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; تصميم مهندس ابراهيم سعد - للتواصل: 01101475409
+        </marquee>
+    </div>
+
+    <script>
+        const audio = document.getElementById('quranAudio');
+        const playBtn = document.getElementById('playBtn');
+
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i> إيقاف مؤقت';
+            } else {
+                audio.pause();
+                playBtn.innerHTML = '<i class="fa-solid fa-play"></i> تشغيل الصوت';
+            }
+        }
+
+        // تشغيل الصوت تلقائياً مع أول لمسة أو ضغطة للعميل على الصفحة
+        document.addEventListener('click', function startAudio() {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i> إيقاف مؤقت';
+                }).catch(() => {});
+            }
+            document.removeEventListener('click', startAudio);
+        }, { once: true });
+    </script>
+</body>
+</html>
