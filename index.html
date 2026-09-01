@@ -1,64 +1,106 @@
-ِ    // سلايدر الصور
-    function startSlider() {
-        let imgs = document.querySelectorAll('.slider-img'); let i = 0;
-        setInterval(() => {
-            imgs[i].classList.remove('active-img');
-            i = (i + 1) % imgs.length;
-            imgs[i].classList.add('active-img');
-        }, 3000);
-    }
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خطوبة يوسف & فاطمة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #d4af37; --bg-night: #050b1a; --overlay: rgba(5, 11, 26, 0.9); }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg-night); color: white; margin: 0; overflow: hidden; background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); }
 
-    // التنقل بين الصفحات
-    function nextPage(n) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById('p'+n).classList.add('active');
-    }
-</script>
-</body>
-</html>
+        /* شاشة الظرف */
+        #envelope-layer { position: fixed; inset: 0; z-index: 2000; background: var(--bg-night); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: opacity 0.5s; }
+        .envelope { width: 120px; height: 90px; background: var(--gold); border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); animation: bounce 2s infinite; }
+        .open-seal { font-size: 35px; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        let isDrawing = false;
-        function scratch(e) {
-            if (!isDrawing) return;
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX || e.touches[0].clientX) - rect.left;
-            const y = (e.clientY || e.touches[0].clientY) - rect.top;
-            ctx.globalCompositeOperation = 'destination-out';
-            ctx.beginPath();
-            ctx.arc(x, y, 40, 0, Math.PI * 2);
-            ctx.fill();
-            checkPercent();
-        }
-
-        function checkPercent() {
-            const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
-            let cleared = 0;
-            for(let i=0; i<data.length; i+=32) if(data[i] === 0) cleared++;
-            if(cleared > (data.length/32) * 0.4) {
-                canvas.style.transition = '1s';
-                canvas.style.opacity = '0';
-                setTimeout(() => layer.style.display = 'none', 1000);
-            }
-        }
-
-        canvas.addEventListener('mousedown', () => isDrawing = true);
-        canvas.addEventListener('touchstart', () => isDrawing = true);
-        window.addEventListener('mouseup', () => isDrawing = false);
-        window.addEventListener('touchend', () => isDrawing = false);
-        canvas.addEventListener('mousemove', scratch);
-        canvas.addEventListener('touchmove', scratch);
-    }
-
-    function showMainPage() {
-        document.getElementById('intro-layer').style.display = 'none';
-        document.getElementById('p1').classList.add('active');
+        /* النصوص والصفحات */
+        .neon-text { font-family: 'Amiri', serif; font-size: 2.2rem; color: var(--gold); text-align: center; margin: 10px 0; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { text-shadow: 0 0 5px var(--gold); } 50% { text-shadow: 0 0 15px var(--gold); } }
         
+        #stars-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+        .star { position: absolute; background: white; border-radius: 50%; opacity: 0.5; animation: twinkle var(--duration) infinite ease-in-out; }
+        
+        .page { display: none; height: 100vh; text-align: center; padding: 20px; box-sizing: border-box; overflow-y: auto; background: var(--overlay); position: relative; z-index: 500; }
+        .active { display: flex; flex-direction: column; align-items: center; justify-content: center; animation: fadeIn 1s; }
+
+        /* تعديل إطار وجدول الصور لضبط العرض */
+        .slider-container { width: 260px; height: 260px; position: relative; margin: 15px auto; border-radius: 20px; border: 2px solid var(--gold); overflow: hidden; box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
+        .slider-img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 1s ease-in-out; }
+        .slider-img.active-img { opacity: 1; }
+
+        .btn-main { background: transparent; color: var(--gold); padding: 12px 25px; border-radius: 30px; border: 2px solid var(--gold); cursor: pointer; margin: 5px; font-weight: bold; text-decoration: none; display: inline-block; font-size: 0.9rem; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<!-- رابط صوت مباشر موثوق -->
+<audio id="bgMusic" loop preload="auto">
+    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Tours/Enthusiast/Tours_-_01_-_Enthusiast.mp3" type="audio/mpeg">
+</audio>
+
+<div id="stars-container"></div>
+
+<!-- واجهة الظرف -->
+<div id="envelope-layer" onclick="openInvitation()">
+    <div class="envelope">
+        <span class="open-seal">💌</span>
+    </div>
+    <h2 style="color: var(--gold); margin-top: 20px;">دعوة خطوبة</h2>
+    <p style="color: #ccc; font-size: 0.9rem;">اضغط على الظرف لفتح الدعوة ✨</p>
+</div>
+
+<div id="p1" class="page">
+    <h1 class="neon-text">يوسف & فاطمة</h1>
+    <div class="slider-container">
+        <!-- صور عالية الجودة بأبعاد مضبوطة -->
+        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" class="slider-img active-img" alt="صورة 1">
+        <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=600&q=80" class="slider-img" alt="صورة 2">
+        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" class="slider-img" alt="صورة 3">
+    </div>
+    <p style="font-size: 1rem; line-height: 1.6; margin: 10px 0;">
+        أتشرف بدعوة حضراتكم لحضور حفل خطوبة كريمتي وقرة عيني<br>
+        <strong>الآنسة / فاطمة فريد شوقي</strong><br>
+        إلى الأستاذ / <strong>يوسف مؤمن حسن</strong>
+    </p>
+    <button class="btn-main" onclick="nextPage(2)">الموعد والمكان 📍</button>
+</div>
+
+<div id="p2" class="page">
+    <h1 style="color: var(--gold);">موعدنا المنتظر</h1>
+    <div style="border: 1px solid var(--gold); padding: 15px; border-radius: 15px; background: rgba(255,255,255,0.05); width: 85%;">
+        <p style="font-size: 1.1rem; font-weight: bold;">الثلاثاء، 15 سبتمبر 2026</p>
+        <p>من الساعة 7:00 مساءً إلى 11:00 مساءً</p>
+        <p style="color: var(--gold); font-weight: bold;">قاعة U See Nile K</p>
+        <p>على كورنيش الوراق - أمام فودافون</p>
+        <a href="https://maps.google.com" target="_blank" class="btn-main" style="border-color: #2ecc71; color: #2ecc71;">موقعنا على الخريطة 📍</a>
+    </div>
+    <div style="margin-top: 20px;">
+        <a href="https://wa.me/?text=مبروك+يوسف+وفاطمة!" target="_blank" class="btn-main" style="background: var(--gold); color: black;">كلمة للعروسين ✍️</a>
+        <br>
+        <a href="https://wa.me/?text=شاركونا+فرحتنا+بخطوبة+يوسف+وفاطمة!" target="_blank" class="btn-main">مشاركة الرابط 🔗</a>
+    </div>
+</div>
+
+<script>
+    function openInvitation() {
+        const env = document.getElementById('envelope-layer');
+        env.style.opacity = '0';
+        setTimeout(() => {
+            env.style.display = 'none';
+            document.getElementById('p1').classList.add('active');
+        }, 500);
+
+        // تشغيل الصوت بعد النقر لتجاوز حظر المتصفح
         const music = document.getElementById('bgMusic');
-        music.play().catch(error => console.log("تعذر التشغيل التلقائي للصوت:", error));
-        
+        music.play().catch(e => console.log("الصوت بحاجة للتفاعل:", e));
+
         startSlider();
     }
 
+    // خلفية النجوم
     const sCon = document.getElementById('stars-container');
     for(let i=0; i<80; i++) {
         let s = document.createElement('div'); s.className='star';
@@ -67,8 +109,10 @@
         s.style.setProperty('--duration', Math.random()*3+2+'s'); sCon.appendChild(s);
     }
 
+    // سلايدر الصور
     function startSlider() {
-        let imgs = document.querySelectorAll('.slider-img'); let i = 0;
+        let imgs = document.querySelectorAll('.slider-img'); 
+        let i = 0;
         setInterval(() => {
             imgs[i].classList.remove('active-img');
             i = (i + 1) % imgs.length;
@@ -76,6 +120,7 @@
         }, 3000);
     }
 
+    // التنقل بين الصفحات
     function nextPage(n) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById('p'+n).classList.add('active');
