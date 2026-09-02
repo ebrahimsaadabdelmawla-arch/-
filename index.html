@@ -36,7 +36,6 @@
 </head>
 <body>
 
-<!-- تشغيل الأغنية المرفوعة على GitHub مباشرة -->
 <audio id="bgMusic" loop preload="auto">
     <source src="song.mp3" type="audio/mpeg">
 </audio>
@@ -55,7 +54,6 @@
 <div id="p1" class="page">
     <h1 class="neon-text">يوسف & فاطمة</h1>
     <div class="slider-container">
-        <!-- الصور المباشرة المرفوعة أونلاين -->
         <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" class="slider-img active-img" alt="صورة 1">
         <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=600&q=80" class="slider-img" alt="صورة 2">
         <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" class="slider-img" alt="صورة 3">
@@ -85,6 +83,15 @@
 </div>
 
 <script>
+    function playAudio() {
+        const music = document.getElementById('bgMusic');
+        music.play().then(() => {
+            // تكرار إزالة المستمع فور نجاح التشغيل
+            document.removeEventListener('click', playAudio);
+            document.removeEventListener('touchstart', playAudio);
+        }).catch(e => console.log("في انتظار التفاعل..."));
+    }
+
     function openInvitation() {
         const env = document.getElementById('envelope-layer');
         env.style.opacity = '0';
@@ -93,14 +100,14 @@
             document.getElementById('p1').classList.add('active');
         }, 500);
 
-        // تشغيل صوت GitHub مباشرة
-        const music = document.getElementById('bgMusic');
-        music.play().catch(e => console.log("الصوت بحاجة للتفاعل:", e));
+        playAudio();
+        // تفعيل التشغيل الاحتياطي عند اللمس في أي مكان
+        document.addEventListener('click', playAudio);
+        document.addEventListener('touchstart', playAudio);
 
         startSlider();
     }
 
-    // خلفية النجوم
     const sCon = document.getElementById('stars-container');
     for(let i=0; i<80; i++) {
         let s = document.createElement('div'); s.className='star';
@@ -108,6 +115,24 @@
         s.style.width=s.style.height=Math.random()*3+'px';
         s.style.setProperty('--duration', Math.random()*3+2+'s'); sCon.appendChild(s);
     }
+
+    function startSlider() {
+        let imgs = document.querySelectorAll('.slider-img'); 
+        let i = 0;
+        setInterval(() => {
+            imgs[i].classList.remove('active-img');
+            i = (i + 1) % imgs.length;
+            imgs[i].classList.add('active-img');
+        }, 3000);
+    }
+
+    function nextPage(n) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('p'+n).classList.add('active');
+    }
+</script>
+</body>
+</html>
 
     // سلايدر الصور
     function startSlider() {
